@@ -1,0 +1,20 @@
+h2 SELECT query form
+
+form(action="/", method="post") 
+    label SELECT 
+    br
+    input(type="text", name="columns")
+    br 
+    | FROM
+    br
+    textarea(name="tablespec", cols="30", rows="5")
+    br
+    | WHERE
+    br
+    textarea(name="where_clause", cols="30", rows="10") true
+    br 
+    | ;
+    br
+    input(type="hidden", name="formname", value="SQL")
+    input(type="submit", value="Run query") 
+    input(type="reset", value="Reset")

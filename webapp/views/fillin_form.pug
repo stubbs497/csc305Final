@@ -1,0 +1,46 @@
+h2 Fillable dropdown form
+
+if schools && (schools.length > 0)
+    form(action="/", method="post")
+        input(type="hidden", name="formname", value="dropdown")
+        label SELECT
+        | 
+        if postdata && postdata.columns && (postdata.columns !== '*')
+            input(type="text", name="columns", value=postdata.columns, required)
+        else
+            input(type="text", name="columns", value="*", required)
+        span.flag
+        |  FROM Course WHERE
+        br
+        | instID =
+        | 
+        select(name='instID', required, onchange="setInstitution(this);")
+            each rowObj in schools
+                if (postdata.instID && (postdata.instID == rowObj.id))
+                    option(value = rowObj.id, selected) #{rowObj.id}: #{rowObj.schoolName}
+                else 
+                    option(value = rowObj.id) #{rowObj.id}: #{rowObj.schoolName}
+        span.flag
+        br
+        | and id = 
+        |
+        if postdata.instID 
+            select(name='courseID', required)
+                option(value="") &mdash;Please select a course&mdash;
+                each rowObj in courses
+                    if (postdata.courseID && (postdata.courseID == rowObj.id))
+                        option(value = rowObj.id, selected) #{rowObj.id}: #{rowObj.crs_code}
+                    else
+                        option(value = rowObj.id) #{rowObj.id}: #{rowObj.crs_code}
+            span.flag
+        else
+            select(name='courseID', disabled)
+                option(value="") &mdash;Please select a course&mdash;
+        br
+        input(type="reset", value="Reset")
+        if postdata.instID 
+            input(type="submit", value="Submit")
+        else 
+            input(type="submit", value="Submit", disabled)
+else
+    p No schools, no form!
