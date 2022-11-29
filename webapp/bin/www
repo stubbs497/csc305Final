@@ -12,7 +12,7 @@ var dbconnect = require('../public/javascripts/dbconnect');
 /**
  * Open the database and attach it to the app object.
  */
-app.locals.db = dbconnect.dbopen('../crsequiv.sqlite');
+app.locals.db = dbconnect.dbopen('crsequiv.sqlite');
 
 /**
  * Get port from environment and store in Express.
