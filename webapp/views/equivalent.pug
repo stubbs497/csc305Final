@@ -34,7 +34,7 @@ form(action="/", method="post")
     if (converse_courses && converse_courses.length > 0)
         select(name='ConverseID', required)
             option(value="") &mdash;Please select a course&mdash;
-            each rowObj in courses
+            each rowObj in converse_courses
                 option(value=rowObj.id, selected=(postdata.ConverseID == rowObj.id)) #{rowObj.id}: #{rowObj.crs_code}
         span.flag
     else
