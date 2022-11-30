@@ -16,8 +16,6 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   let query = '';
 
-  /* If the columns aren't specified, there's no query here. */
-  if (req.body.columns) {
     if (req.body.formname && (req.body.formname === 'SQL')) {
       // Query from the main form.
       // Note this is HIGHLY insecure!  Input should be
@@ -35,6 +33,13 @@ router.post('/', function(req, res, next) {
           query = `SELECT ${req.body.columns} FROM Course WHERE `
                   + `instID = ${req.body.instID};`;
       }
+      else if (req.body.formname == "addcourse") {
+        consol.log('Adding a Course');
+
+        query = 'INSERT into Course(crs_code,crs_name,hours,instID)'
+          + `values('${req.body.crs_code}','${req.body.crs_name}','${req.body.hours}','${req.body.instID}');`;
+        }
+
       else { // courseID is specified
         query = 'SELECT * FROM Reqt inner join Equivalence on Reqt.id=ReqtID '
           + 'inner join Course on ForeignID=Course.id '
@@ -42,7 +47,7 @@ router.post('/', function(req, res, next) {
           + `and (Equivalence.effective is null or date(${req.body.datetaken})>=Equivalence.effective) `
           + `and (Equivalence.expires is null or date(${req.body.datetaken})<=Equivalence.expires);`
       }
-    }
+    
   }
   runMainQuery(req, res, next, query);
 });

@@ -1,0 +1,31 @@
+h2 Add a course
+
+form(action="/", method="post")
+    input(type="hidden",name="formname",value="addcourse")
+
+label Instiution: 
+    select(name='instID', required, onchange="setInstitution(this);")
+            each rowObj in schools
+                if (postdata.instID && (postdata.instID == rowObj.id))
+                    option(value = rowObj.id, selected) #{rowObj.id}: #{rowObj.schoolName}
+                else 
+                    option(value = rowObj.id) #{rowObj.id}: #{rowObj.schoolName}
+    span.flag
+    br
+    label Course Code:
+    input(type="text", name="crs_code", required)
+    span.flag
+    br
+    label Course Name: 
+    input(type="text", name="crs_name")
+    span.flag
+    br
+    label Hours: 
+    input(type="number", name="hours", required, min=0,max=15, value=3)
+    span.flag
+    br
+    input(type="reset", value="Reset")
+    if postdata.instID 
+        input(type="submit", value="Submit")
+    else 
+        input(type="submit", value="Submit", disabled)
