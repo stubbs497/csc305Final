@@ -34,7 +34,7 @@ router.post('/', function(req, res, next) {
                   + `instID = ${req.body.instID};`;
       }
       else if (req.body.formname == 'addcourse' && req.body.crs_code && req.body.instID && req.body.hours) {
-        consol.log('Adding a Course');
+        console.log('Adding a Course');
 
         query = 'INSERT into Course(crs_code,crs_name,hours,instID)'
           + `values('${req.body.crs_code}','${req.body.crs_name}','${req.body.hours}','${req.body.instID}');`;
