@@ -48,6 +48,17 @@ router.post('/', function(req, res, next) {
         query = 'INSERT into Course(crs_code,crs_name,hours,instID) '
           + `values('${req.body.crs_code}','${req.body.crs_name}','${req.body.hours}','${req.body.instID}');`;
       }
+      else if (req.body.formname == 'equivalent' && req.body.courseID && req.body.instID) {
+        console.log('Adding an Equivalence');
+        if (req.body.ConverseID) {
+          query = 'INSERT into Equivalence(ForeignID, ConverseID, authorizedby, dateapproved) '
+            + `values('${req.body.courseID}','${req.body.ConverseID}','default', date('1889-01-01'));`;
+        }
+        else if (req.body.ReqtID) {
+          query = 'INSERT into Equivalence(ForeignID, ReqtID, authorizedby, dateapproved) '
+            + `values('${req.body.courseID}','${req.body.ReqtID}','default', date('1889-01-01'));`;
+        }
+      }
     
 
   runMainQuery(req, res, next, query);

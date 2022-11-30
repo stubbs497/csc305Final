@@ -1,7 +1,7 @@
 h2 Add an equivalence 
 
 form(action="/", method="post")
-    input(type="hidden", name="formname", value="dropdown")
+    input(type="hidden", name="formname", value="equivalent")
 
     | Institution:
     | 
@@ -32,11 +32,10 @@ form(action="/", method="post")
     br
     label Converse course: 
     if (converse_courses && converse_courses.length > 0)
-        select(name='ConverseID', required)
+        select(name='ConverseID')
             option(value="") &mdash;Please select a course&mdash;
             each rowObj in converse_courses
                 option(value=rowObj.id, selected=(postdata.ConverseID == rowObj.id)) #{rowObj.id}: #{rowObj.crs_code}
-        span.flag
     else
         select(name='ConverseID', disabled)
             option(value="") &mdash;Please select a course&mdash;
@@ -44,6 +43,14 @@ form(action="/", method="post")
     br
     | OR 
     label Converse requirement: 
+    if (reqts && reqts.length > 0)
+        select(name='ReqtID')
+            option(value="") &mdash;Please select a requirement&mdash;
+            each rowObj in reqts
+                option(value=rowObj.id, selected=(postdata.ReqtID == rowObj.id)) #{rowObj.id}: #{rowObj.ARC_code} #{rowObj.description}
+    else
+        select(name='ReqtID', disabled)
+            option(value="") &mdash;Please select a requirement&mdash;
 
     input(type="reset", value="Reset")
     if postdata.instID 
