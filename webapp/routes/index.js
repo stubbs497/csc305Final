@@ -33,7 +33,7 @@ router.post('/', function(req, res, next) {
           query = `SELECT ${req.body.columns} FROM Course WHERE `
                   + `instID = ${req.body.instID};`;
       }
-      else if (req.body.formname == "addcourse") {
+      else if (req.body.formname == 'addcourse' && req.body.crs_code && req.body.instID && req.body.hours) {
         consol.log('Adding a Course');
 
         query = 'INSERT into Course(crs_code,crs_name,hours,instID)'
