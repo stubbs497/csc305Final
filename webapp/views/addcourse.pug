@@ -3,7 +3,7 @@ h2 Add a course
 form(action="/", method="post")
     input(type="hidden",name="formname",value="addcourse")
 
-label Instiution: 
+    label Instiution: 
     select(name='instID', required, onchange="setInstitution(this);")
             each rowObj in schools
                 if (postdata.instID && (postdata.instID == rowObj.id))
@@ -25,7 +25,4 @@ label Instiution:
     span.flag
     br
     input(type="reset", value="Reset")
-    if postdata.instID 
-        input(type="submit", value="Submit")
-    else 
-        input(type="submit", value="Submit", disabled)
+    input(type="submit", value="Submit", disabled=(postdata.instID === undefined))

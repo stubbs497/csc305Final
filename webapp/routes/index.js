@@ -27,28 +27,29 @@ router.post('/', function(req, res, next) {
     else if (req.body.formname && (req.body.formname == 'dropdown')
               && req.body.columns && (req.body.columns !== '')
               && req.body.instID) {
-      // Query from the dropdown form.  Again, the input really should be
-      // sanitized for security.
-      if (!req.body.courseID) {
-          query = `SELECT ${req.body.columns} FROM Course WHERE `
-                  + `instID = ${req.body.instID};`;
+        // Query from the dropdown form.  Again, the input really should be
+        // sanitized for security.
+        if (!req.body.courseID) {
+            query = `SELECT ${req.body.columns} FROM Course WHERE `
+                    + `instID = ${req.body.instID};`;
+        }
+
+        else { // courseID is specified
+          query = 'SELECT * FROM Reqt inner join Equivalence on Reqt.id=ReqtID '
+            + 'inner join Course on ForeignID=Course.id '
+            + `WHERE instID=${req.body.instID} and Course.id=${req.body.courseID} `
+            + `and (Equivalence.effective is null or date(${req.body.datetaken})>=Equivalence.effective) `
+            + `and (Equivalence.expires is null or date(${req.body.datetaken})<=Equivalence.expires);`
+        }
       }
       else if (req.body.formname == 'addcourse' && req.body.crs_code && req.body.instID && req.body.hours) {
         console.log('Adding a Course');
 
-        query = 'INSERT into Course(crs_code,crs_name,hours,instID)'
+        query = 'INSERT into Course(crs_code,crs_name,hours,instID) '
           + `values('${req.body.crs_code}','${req.body.crs_name}','${req.body.hours}','${req.body.instID}');`;
-        }
-
-      else { // courseID is specified
-        query = 'SELECT * FROM Reqt inner join Equivalence on Reqt.id=ReqtID '
-          + 'inner join Course on ForeignID=Course.id '
-          + `WHERE instID=${req.body.instID} and Course.id=${req.body.courseID} `
-          + `and (Equivalence.effective is null or date(${req.body.datetaken})>=Equivalence.effective) `
-          + `and (Equivalence.expires is null or date(${req.body.datetaken})<=Equivalence.expires);`
       }
     
-  }
+
   runMainQuery(req, res, next, query);
 });
 
