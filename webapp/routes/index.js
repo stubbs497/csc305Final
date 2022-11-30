@@ -31,8 +31,17 @@ router.post('/', function(req, res, next) {
               && req.body.instID) {
       // Query from the dropdown form.  Again, the input really should be
       // sanitized for security.
-      query = `SELECT ${req.body.columns} FROM Course WHERE `
-              + `instID = ${req.body.instID};`;
+      if (!req.body.courseID) {
+          query = `SELECT ${req.body.columns} FROM Course WHERE `
+                  + `instID = ${req.body.instID};`;
+      }
+      else { // courseID is specified
+        query = 'SELECT * FROM Reqt inner join Equivalence on Reqt.id=ReqtID '
+          + 'inner join Course on ForeignID=Course.id '
+          + `WHERE instID=${req.body.instID} and Course.id=${req.body.courseID} `
+          + `and (Equivalence.effective is null or date(${req.body.datetaken})>=Equivalence.effective) `
+          + `and (Equivalence.expires is null or date(${req.body.datetaken})<=Equivalence.expires);`
+      }
     }
   }
   runMainQuery(req, res, next, query);

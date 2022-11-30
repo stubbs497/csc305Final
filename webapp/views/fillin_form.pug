@@ -37,6 +37,10 @@ if schools && (schools.length > 0)
             select(name='courseID', disabled)
                 option(value="") &mdash;Please select a course&mdash;
         br
+        | Date taken: 
+        | 
+        input(type="date", name="datetaken")
+        br
         input(type="reset", value="Reset")
         if postdata.instID 
             input(type="submit", value="Submit")
