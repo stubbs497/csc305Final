@@ -1,0 +1,52 @@
+h2 Add an equivalence 
+
+form(action="/", method="post")
+    input(type="hidden", name="formname", value="dropdown")
+
+    | Institution:
+    | 
+    select(name='instID', required, onchange="setInstitution(this);")
+        each rowObj in schools
+            if (postdata.instID && (postdata.instID == rowObj.id))
+                option(value = rowObj.id, selected) #{rowObj.id}: #{rowObj.schoolName}
+            else 
+                option(value = rowObj.id) #{rowObj.id}: #{rowObj.schoolName}
+    span.flag
+    br
+    | Course:
+    |
+    if postdata.instID 
+        select(name='courseID', required)
+            option(value="") &mdash;Please select a course&mdash;
+            each rowObj in courses
+                if (postdata.courseID && (postdata.courseID == rowObj.id))
+                    option(value = rowObj.id, selected) #{rowObj.id}: #{rowObj.crs_code}
+                else
+                    option(value = rowObj.id) #{rowObj.id}: #{rowObj.crs_code}
+        span.flag
+    else
+        select(name='courseID', disabled)
+            option(value="") &mdash;Please select a course&mdash;
+    br
+    | is equivalent to (pick ONE of the following):
+    br
+    label Converse course: 
+    if (converse_courses && converse_courses.length > 0)
+        select(name='ConverseID', required)
+            option(value="") &mdash;Please select a course&mdash;
+            each rowObj in courses
+                option(value=rowObj.id, selected=(postdata.ConverseID == rowObj.id)) #{rowObj.id}: #{rowObj.crs_code}
+        span.flag
+    else
+        select(name='ConverseID', disabled)
+            option(value="") &mdash;Please select a course&mdash;
+      
+    br
+    | OR 
+    label Converse requirement: 
+
+    input(type="reset", value="Reset")
+    if postdata.instID 
+        input(type="submit", value="Submit")
+    else 
+        input(type="submit", value="Submit", disabled)

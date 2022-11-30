@@ -92,7 +92,24 @@ function runSchoolsQuery(req, res, next) {
       throw err;
     }
     req.app.locals.schools = schools;
-    runCoursesQuery(req, res, next);
+
+    let converse_courses_query = "SELECT id, crs_code from Course where instID=1;";
+    req.app.locals.db.all(converse_courses_query, [], (err, converse_courses) => {
+      if (err) {
+        throw err;
+      }
+      req.app.locals.converse_courses = converse_courses;
+
+      let reqts_query = 'SELECT id, ARC_code, description from Reqt;';
+      req.app.locals.db.all(reqts_query, [], (err, reqts) => {
+        if (err) {
+          throw err;
+        }
+        req.app.locals.reqts = reqts;
+
+        runCoursesQuery(req, res, next);
+      });
+    });
   });
 }
 
@@ -140,6 +157,8 @@ function showIndex(req, res, next) {
                         schools: req.app.locals.schools,
                         instID: req.app.locals.instID,
                         courses: req.app.locals.courses,
+                        converse_courses: req.app.locals.converse_courses,
+                        reqts: req.app.locals.reqts,
                         postdata: req.body });
 }
 
